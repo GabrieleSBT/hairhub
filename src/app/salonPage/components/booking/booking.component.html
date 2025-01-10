@@ -1,31 +1,20 @@
-<!--<div id="barberChoice">
-    <form (ngSubmit)="onBarberSelected()">>
-        <label for="barbers">Barbiere</label>
-        <select name="barbers" id="barbers" (change)="onBarberSelected(barberId)">
-        @if (barbers) {
-            @for(barber of barbers; track barber.id) {
-                <option value="{{barber.id}}">{{barber.name}}</option>
-            }
-        }
-        </select>
-        <input type="submit" value="Submit" />
-    </form>
-</div> -->
-<!--
-<div id="barberChoice">
-    <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()" >
-        <label for="barbers">Barbiere</label>
-        <select name="barbers" id="barbers" formControlName="barberId">
-        @if (barbers) {
-            @for(barber of barbers; track barber.id) {
-                <option value="{{barber.id}}">{{barber.name}}</option>
-            }
-        }
-        </select>
-        <button type="submit"> Invia </button>
-    </form>
-</div> -->
-<form [formGroup]="bookingForm"> <mat-form-field>
+<div class="modal-container">
+<div class = "booking-container">
+@if(bookingConfirmed){
+  <div>
+    <mat-card> 
+      <mat-card-title>Prenotazione Effettuata!</mat-card-title>
+      <mat-card-content>
+        <p>La tua prenotazione è stata confermata.</p>
+      </mat-card-content>
+    <mat-card-actions>
+        <button mat-raised-button color="accent" (click)="onClose()">Chiudi</button>
+      </mat-card-actions>
+    </mat-card>
+</div>
+}
+@else {
+<form (ngSubmit)="onSubmit()" [formGroup]="bookingForm"> <mat-form-field>
     <mat-label>Barbiere</mat-label>
     <mat-select formControlName="barberId">
       @for (barber of barbers; track barber.id) {
@@ -81,4 +70,8 @@
 }
 </div>
 <button mat-raised-button color="primary" type="submit">Conferma Prenotazione</button>
+<button mat-raised-button color="primary" (click)="onClose()">Annulla</button>
  </form>
+}
+</div>
+</div>

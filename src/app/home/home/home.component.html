@@ -35,15 +35,71 @@
 
   <div class="content">
     <!-- Sidenav -->
+    
     <mat-drawer-container class="sidenav-container">
       <mat-drawer #drawer mode="over" position="end" class="custom-sidenav">
-        <h2>Storico delle Prenotazioni</h2>
-        <div>
-          <p>Inserisci qui il contenuto dello storico delle prenotazioni.</p>
-        </div>
+        <h2>Active appointments</h2>
+        @for(a of futureAppointments; track a.id){
+          <div id="card-container">
+            <div class="top-section">
+              <div id="priceTag">
+                <span class="amount">{{ calculateTotalPrice(a) | currency }}</span>
+              </div>
+              <div class="appointment-date">
+                <span>{{ a.date | date: 'dd/MM/yyyy' }}</span>
+              </div>
+            </div>
+            <div class="middle-selection">
+              <div class="salon-barber">
+                <span>{{ a.salonName }}</span>
+                <span>{{ a.barberName }}</span>
+              </div>
+            </div>
+            <div class="bottom-section">
+              <ul>
+              @for(treatment of a.treatments; track treatment.id) {
+                <li>{{ treatment.name }}</li>
+              }
+            </ul>
+            </div>
+            <button class="cancel-btn" (click)="deleteAppointment(a.id)">Disdici</button>
+          </div>
+        }
+
+        <h2>Past appointments</h2>
+
+        @for(a of pastAppointments; track a.id){
+          <div id="card-container">
+            <div class="top-section">
+              <div id="priceTag">
+                <span class="amount">{{ calculateTotalPrice(a) | currency }}</span>
+              </div>
+              <div class="appointment-date">
+                <span>{{ a.date | date: 'dd/MM/yyyy' }}</span>
+              </div>
+            </div>
+            <div class="middle-selection">
+              <div class="salon-barber">
+                <span>{{ a.salonName }}</span>
+                <span>{{ a.barberName }}</span>
+              </div>
+            </div>
+            <div class="bottom-section">
+              <ul>
+                @for(treatment of a.treatments; track treatment.id + '-' + treatment.name) {
+                  <li>{{ treatment.name }}</li>
+                }
+            </ul>
+            </div>
+          </div>
+        }
+
+    
         <button mat-button (click)="closeSidenav()">Chiudi</button>
       </mat-drawer>
-    </mat-drawer-container>
+    </mat-drawer-container> 
+    
+    
 
     <!-- Componenti principali -->
     <app-topsaloon></app-topsaloon>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ViewChild } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, ChangeDetectorRef, ApplicationRef } from '@angular/core';
 import { TopsalonComponent } from '../topsalon/topsalon.component';
 import { RouterModule } from '@angular/router';
 import { SwiperCarouselComponent } from '../carousel/carousel.component';
@@ -20,6 +20,8 @@ import { MatDrawer, MatDrawerContainer } from '@angular/material/sidenav';
 import { UserService } from '../../model/hometables/userService';
 import { AppointmentService } from '../../model/bookingAppointment/appointment.service';
 import { AppointmentDetail } from '../../model/hometables/AppointmentDetail';
+import { TreatmentDto } from '../../model/hometables/TreatmentDto';
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-home',
   imports: [
@@ -37,6 +39,7 @@ import { AppointmentDetail } from '../../model/hometables/AppointmentDetail';
     SidenavComponent,
     MatDrawerContainer,
     MatDrawer,
+    CommonModule,
 
   ],
   templateUrl: './home.component.html',
@@ -46,13 +49,15 @@ export class HomeComponent implements OnInit {
   
   @ViewChild('drawer') drawer!: MatDrawer; // Riferimento alla sidenav
 
-  appointments !: AppointmentDetail[];
+  futureAppointments : AppointmentDetail[] = [];
+  pastAppointments : AppointmentDetail[] = [];
   isLoggedIn = false;
   isAuthenticated: boolean = false;
   showLogin = false; // Variabile per controllare la visibilità del LoginComponent
   showRegister = false; // Variabile per controllare la visibilità del RegisterComponent
   userProfile: any = null;  // Variabile per salvare il profilo dell'utente
-  constructor(private dialog: MatDialog, private userService: UserService, private appointmentService: AppointmentService) {}
+  constructor(private dialog: MatDialog, private userService: UserService, private appointmentService: AppointmentService, private cdRef: ChangeDetectorRef, private appRef: ApplicationRef) {}
+
 
   ngOnInit(): void {
     this.checkAuthentication();
@@ -65,12 +70,34 @@ export class HomeComponent implements OnInit {
     const userIdStr =this.userService.getUserIdFromToken();
     const userId = userIdStr ? parseInt(userIdStr) : null;
     console.log('userId:', userId);
-    if(userId != null){
-      this.appointmentService.getAppointments(userId).subscribe({
-        next: a => this.appointments = a,
+    if (userId != null) {
+      this.appointmentService.getFutureAppointments(userId).subscribe({
+        next: a => {
+          console.log('Array delle future appuntamenti:', a);  // Stampa l'array
+          a.forEach((appointment: AppointmentDetail) => {
+            if (appointment.status === "Cancelled") {
+              this.pastAppointments.push(appointment);
+              this.appRef.tick();
+            } else {
+              this.futureAppointments.push(appointment);
+            }
+          });
+        },
         error: err => console.log(err)
       });
     }
+    if(userId != null){
+      this.appointmentService.getPastAppointments(userId).subscribe({
+        next: a =>{
+          console.log('Array dei passati appuntamenti:', a); 
+         this.pastAppointments = this.pastAppointments.concat(a);
+          console.log('Array dei passati appuntamentissss:', this.pastAppointments);          
+        },
+        error: err => console.log(err)
+      });
+    
+    }
+
   }
 
   // Funzione per aprire il dialog di login
@@ -166,4 +193,46 @@ export class HomeComponent implements OnInit {
     }
   }
   
+  calculateTotalPrice(futureAppointment: AppointmentDetail): number {
+    // Primo map per ottenere solo i prezzi, poi reduce per sommarli
+    return futureAppointment.treatments.map(t => t.price).reduce((total: number, price: number) => total + price, 0);
+  }
+
+  deleteAppointment(appointmentId: number): void {
+    // Trova l'appuntamento nell'array futureAppointments
+    const appointmentToDelete = this.futureAppointments.find(a => a.id === appointmentId);
+  
+    if (appointmentToDelete) {
+      this.appointmentService.deleteAppointment(appointmentId).subscribe({
+        next: () => {
+          console.log(`Appuntamento con ID ${appointmentId} eliminato con successo.`);
+  
+          // Rimuove l'appuntamento da futureAppointments creando un nuovo array
+          appointmentToDelete.status = "Cancelled";
+          this.futureAppointments = this.futureAppointments.filter(a => a.id !== appointmentId);
+          
+          // Se l'appuntamento è stato annullato, spostalo in pastAppointments creando un nuovo array
+          if (appointmentToDelete.status === "Cancelled") {
+            this.pastAppointments = [...this.pastAppointments, appointmentToDelete];
+          }
+          console.log(this.pastAppointments);
+          console.log(this.futureAppointments);
+          console.log('Stato appuntamento:', appointmentToDelete.status);
+          
+          
+          // Forza l'aggiornamento della vista
+          this.appRef.tick();
+        },
+        error: err => {
+          console.error('Errore durante l\'eliminazione dell\'appuntamento:', err);
+        }
+      });
+    } else {
+      console.log('Appuntamento non trovato nei futureAppointments');
+    }
+  }
+  
 }
+
+
+

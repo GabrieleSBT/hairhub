@@ -183,7 +183,7 @@ body {
 
 .custom-sidenav {
   width: 300px; /* Larghezza della sidenav */
-  background-color: rgb(189, 183, 183,0.9);; /* Colore di sfondo */
+  background-color: rgb(163, 152, 152);; /* Colore di sfondo */
   padding: 20px;
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2); /* Ombra per l'effetto */
   position: fixed; /* Fissa la sidenav */
@@ -194,7 +194,7 @@ body {
 .custom-sidenav h2 {
   font-family: 'Inconsolata', monospace;
   margin-top: 0;
-  color: white;
+  color: rgb(0, 0, 0);
 }
 
 .custom-sidenav p {
@@ -224,3 +224,95 @@ body {
     padding: 0 20px; /* Riduci il padding su dispositivi mobili */
   }
 }
+
+.sidenav-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Personalizzazione per la sidenav */
+.custom-sidenav {
+  width: 300px;
+  background: #837d7d;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Stile per la card dell'appuntamento */
+#card-container {
+  background-color: rgba(43,43,49,255);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  padding: 15px;
+  transition: transform 0.3s ease;
+}
+
+/* Sezione superiore della card */
+.top-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+/* Tag del prezzo */
+#priceTag .amount {
+  font-size: 18px;
+  font-weight: bold;
+  color: #f8f8f8; /* Verde per il prezzo */
+}
+
+/* Data dell'appuntamento */
+.appointment-date {
+  font-size: 14px;
+  color: white;
+}
+
+/* Sezione centrale della card */
+.middle-selection {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+/* Dettagli salone e barbiere */
+.salon-barber span {
+  font-size: 16px;
+  font-weight: bold;
+  color: #d0d0d0;
+  display: block;
+}
+
+/* Sezione inferiore della card */
+.bottom-section ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.bottom-section li {
+  font-size: 14px;
+  color: #d8d8d8;
+  margin-bottom: 5px;
+}
+
+/* Bottone per cancellare l'appuntamento */
+.cancel-btn {
+  background-color: #999292;
+  color: #fff;
+  padding: 8px 16px;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+.cancel-btn:hover {
+  background-color: #e64a19;
+}
+
+/* Bottone per chiudere la sidenav */
+

@@ -1,24 +1,130 @@
-#barberChoice{
+/* Contenitore dell'overlay modale */
+.modal-container {
     display: flex;
-    flex-direction: column;
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
-#barberChoice label{
-    font-size: 16px;
-    font-weight: 600;
-    margin-left: 10px;
-    margin-bottom: 8px;
-    color: black;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(253, 249, 249, 0.4); /* Sfondo più scuro ma semi-trasparente */
+
+    z-index: 1000;
+    padding: 0;
+    margin: 0;
 }
 
-#barberChoice select{
-    margin-left: 20px;
+/* Contenitore della finestra di dialogo */
+.booking-container {
+    max-width: 400px;
+    width: 90%;
+    background: #ffffff; /* Sfondo bianco */
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); /* Ombra più leggera */
+    position: relative;
+    animation: fadeIn 0.3s ease-in-out;
+    color: #333333; /* Colore del testo scuro per un buon contrasto su sfondo bianco */
 }
-#barberChoice input{
-    margin-left: 20px;
+
+/* Titolo della finestra */
+.booking-container h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.6rem;
+    font-weight: bold;
+    text-align: center;
+    color: #333333; /* Colore del titolo più scuro per contrastare con lo sfondo bianco */
 }
-.mat-calendar-body-cell-disabled {
-    pointer-events: none; /* Disabilita l'interazione con la cella */
-    color: gray; /* Cambia il colore per le date disabilitate */
+
+/* Form field */
+.booking-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
+
+.booking-container input,
+.booking-container select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #242020; /* Testo chiaro */
+    /* Aggiungi bordo grigio chiaro */
+}
+
+.booking-container input:focus,
+.booking-container select:focus {
+    border-color: #76c7c0; /* Highlight verde acqua per focus */
+    outline: none;
+    box-shadow: 0 0 5px rgba(118, 199, 192, 0.7); /* Glow su focus */
+}
+
+/* Pulsanti */
+.booking-container button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #f0f0f0;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Stile comune per entrambi i pulsanti */
+.booking-container button {
+    background-color: #020202; /* Verde acqua */
+    color: #fff; /* Testo bianco */
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    font-weight: 400;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 10px rgba(5, 5, 5, 0.3); /* Ombra delicata */
+}
+
+/* Hover per entrambi i pulsanti */
+.booking-container button:hover {
+    background-color: #5bb3aa; /* Verde acqua scuro */
+}
+
+/* Disabilitazione pulsanti */
+.booking-container button:disabled {
+    background-color: #ccc; /* Grigio chiaro */
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* Dettagli della prenotazione */
+.booking-container p {
+    margin: 0;
+    font-size: 1rem;
+    color: #d3d3d3; /* Testo più tenue */
+    text-align: center;
+}
+
+/* Animazione di entrata */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Adattamento per dispositivi mobili */
+@media (max-width: 600px) {
+    .booking-container {
+        width: 95%;
+        padding: 15px;
+    }
+}
+

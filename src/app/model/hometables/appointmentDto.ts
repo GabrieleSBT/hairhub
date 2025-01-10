@@ -1,7 +1,4 @@
-import { TreatmentDto } from "./TreatmentDto";
-
-
-export interface AppointmentDetail{
+export interface AppointmentDto{
     id: number;
     userId: number;
     barberId:number;
@@ -10,7 +7,5 @@ export interface AppointmentDetail{
     startTime: string;
     endTime: string;
     status: string;
-    treatments:TreatmentDto[];
-    salonId: number;
-    salonName: string;
+    treatments:number[];
 } 
