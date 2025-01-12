@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-review-dialog',
@@ -7,7 +8,7 @@ import { Component } from '@angular/core';
   styleUrl: './review-dialog.component.css'
 })
 export class ReviewDialogComponent implements OnInit {
-  form: FormGroup;
+  form!: FormGroup;
 
   constructor(private fb: FormBuilder) { }
 
@@ -47,7 +48,7 @@ export class ReviewDialogComponent implements OnInit {
       return 'Questo campo è obbligatorio';
     }
     if (control.hasError('minlength')) {
-      return `Minimo ${control.errors['minlength'].requiredLength} caratteri richiesti`;
+      return `Minimo ${control.errors?.['minlength']?.requiredLength || 0} caratteri richiesti`;
     }
     if (control.hasError('email')) {
       return 'Indirizzo email non valido';
